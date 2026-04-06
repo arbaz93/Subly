@@ -5,7 +5,7 @@ const SafeAreaView = styled(RNSafeAreaView)
 
 export default function Subscriptions() {
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1 bg-background p-5">
       <Text>Subscriptions</Text>
     </SafeAreaView>
   )
