@@ -12,6 +12,8 @@
     --color-muted-foreground: rgba(0, 0, 0, 0.6);
     --color-primary: #081126;
     --color-accent: #ea7a53;
+    --color-upcoming-bg: #F6ECC9;
+    --color-subscription-bg: rgba(255, 255, 255, 0.3);;
     --color-border: rgba(0, 0, 0, 0.1);
     --color-success: #16a34a;
     --color-destructive: #dc2626;
@@ -78,8 +80,11 @@
         @apply ml-4 text-2xl font-sans-bold text-primary;
     }
 
+    .home-add-icon-container {
+        @apply flex items-center justify-center size-12 rounded-full border
+    }
     .home-add-icon {
-        @apply size-12;
+        @apply size-6;
     }
 
     .home-balance-card {
@@ -126,9 +131,15 @@
         @apply flex-row items-center gap-3;
     }
 
-    .upcoming-icon {
-        @apply size-14;
+    .upcoming-icon-container {
+        @apply size-12 p-2.5 bg-upcoming-bg rounded-[10px]
     }
+    .upcoming-icon {
+        /*@apply size-14;*/
+        @apply size-full;
+
+    }
+
 
     .upcoming-price {
         @apply text-lg font-sans-bold text-primary;
@@ -158,8 +169,11 @@
         @apply min-w-0 flex-1 flex-row items-center gap-3;
     }
 
+    .sub-icon-container {
+        @apply p-2.5 flex items-center justify-center size-16 rounded-[10px] bg-subscription-bg;
+    }
     .sub-icon {
-        @apply size-16 rounded-lg;
+        @apply size-full;
     }
 
     .sub-copy {
