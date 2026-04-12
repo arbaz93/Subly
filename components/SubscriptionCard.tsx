@@ -4,7 +4,8 @@ import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native'
 import React from "react";
 
 const SubscriptionCard = ({ id, icon, startDate, color, expanded, onPress, status, onCancelPress, name, price, currency, billing, category, renewalDate, plan, paymentMethod}:SubscriptionCardProps) => {
-  return (
+    const fallback = "Not Provided"
+    return (
         <Pressable
             onPress={onPress}
             className={
@@ -49,7 +50,7 @@ const SubscriptionCard = ({ id, icon, startDate, color, expanded, onPress, statu
                     <View className='sub-row'>
                         <View className='sub-row-copy'>
                             <Text className='sub-label'>Category:</Text>
-                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{category?.trim() || plan?.trim() || ''}</Text>
+                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{category?.trim() || plan?.trim() || fallback}</Text>
                         </View>
                         <TouchableOpacity className="list-action">
                             <Text className="list-action-text">Change</Text>
@@ -58,7 +59,7 @@ const SubscriptionCard = ({ id, icon, startDate, color, expanded, onPress, statu
                     <View className='sub-row'>
                         <View className='sub-row-copy'>
                             <Text className='sub-label'>Started:</Text>
-                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{startDate ? formatSubscriptionDateTime(startDate) : ''}</Text>
+                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{startDate ? formatSubscriptionDateTime(startDate) : fallback}</Text>
                         </View>
                         <TouchableOpacity className="list-action">
                             <Text className="list-action-text">Change</Text>
@@ -67,7 +68,7 @@ const SubscriptionCard = ({ id, icon, startDate, color, expanded, onPress, statu
                     <View className='sub-row'>
                         <View className='sub-row-copy'>
                             <Text className='sub-label'>Renewal Date:</Text>
-                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{renewalDate ? formatSubscriptionDateTime(renewalDate) : ''}</Text>
+                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{renewalDate ? formatSubscriptionDateTime(renewalDate) : fallback}</Text>
                         </View>
                         <TouchableOpacity className="list-action">
                             <Text className="list-action-text">Change</Text>
@@ -76,7 +77,7 @@ const SubscriptionCard = ({ id, icon, startDate, color, expanded, onPress, statu
                     <View className='sub-row'>
                         <View className='sub-row-copy'>
                             <Text className='sub-label'>Status:</Text>
-                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{status ? formatStatusLabel(status) : ''}</Text>
+                            <Text className='sub-value'  numberOfLines={1} ellipsizeMode='tail'>{status ? formatStatusLabel(status) : fallback}</Text>
                         </View>
                         <TouchableOpacity className="list-action">
                             <Text className="list-action-text">Change</Text>
