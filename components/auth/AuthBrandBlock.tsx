@@ -12,9 +12,9 @@ export function AuthBrandBlock({ title, subtitle }: AuthBrandBlockProps) {
         <View className="auth-logo-mark">
           <Text className="auth-logo-mark-text">S</Text>
         </View>
-        <View>
+        <View className="auth-wordmark-container">
           <Text className="auth-wordmark">Subly</Text>
-          <Text className="auth-wordmark-sub">Subscription clarity</Text>
+          <Text className="auth-wordmark-sub">Smart Billing</Text>
         </View>
       </View>
       <Text className="auth-title">{title}</Text>

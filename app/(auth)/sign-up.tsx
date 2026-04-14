@@ -26,6 +26,7 @@ import {
   validatePassword,
   validatePasswordConfirm,
 } from "@/lib/auth-validation";
+import { posthog } from "@/lib/posthog";
 
 const StyledSafeArea = styled(SafeAreaView);
 
@@ -150,7 +151,11 @@ export default function SignUpScreen() {
         return;
       }
 
+      posthog.capture("email_verification_completed");
+
       if (await finalizeIfComplete()) {
+        posthog.identify(email.trim());
+        posthog.capture("user_signed_up", { method: "email" });
         return;
       }
 
@@ -163,7 +168,7 @@ export default function SignUpScreen() {
     } finally {
       setBusy(false);
     }
-  }, [code, finalizeIfComplete, signUp.verifications, signUp.status, signUp]);
+  }, [code, email, finalizeIfComplete, signUp.verifications, signUp.status, signUp]);
 
   const onResend = useCallback(async () => {
     setApiError(null);
@@ -196,6 +201,7 @@ export default function SignUpScreen() {
 
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId });
+        posthog.capture("user_signed_up_with_google");
         goHome();
         return;
       }
@@ -242,7 +248,7 @@ export default function SignUpScreen() {
                       setEmail(t);
                       setEmailError(undefined);
                     }}
-                    placeholder="you@email.com"
+                    placeholder="Enter your email"
                     keyboardType="email-address"
                     autoComplete="email"
                     textContentType="emailAddress"
@@ -296,7 +302,7 @@ export default function SignUpScreen() {
                       setAgreed((v) => !v);
                       setLegalError(undefined);
                     }}
-                    className="flex-row items-start gap-3"
+                    className="flex-row items-center gap-3"
                   >
                     <View
                       className={clsx(

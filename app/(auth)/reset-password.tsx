@@ -24,6 +24,7 @@ import {
   validatePassword,
   validatePasswordConfirm,
 } from "@/lib/auth-validation";
+import { posthog } from "@/lib/posthog";
 
 const StyledSafeArea = styled(SafeAreaView);
 
@@ -68,6 +69,7 @@ export default function ResetPasswordScreen() {
         return;
       }
 
+      posthog.capture("password_reset_requested");
       setStep("newPassword");
     } finally {
       setBusy(false);
@@ -114,6 +116,7 @@ export default function ResetPasswordScreen() {
           setApiError(mapAuthError(fErr));
           return;
         }
+        posthog.capture("password_reset_completed");
         void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         router.replace("/(tabs)");
         return;

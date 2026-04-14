@@ -22,6 +22,7 @@ import { MfaChallenge } from "@/components/auth/MfaChallenge";
 import { mapAuthError } from "@/lib/auth-errors";
 import { getOAuthRedirectUrl } from "@/lib/auth-linking";
 import { validateEmail, validatePassword } from "@/lib/auth-validation";
+import { posthog } from "@/lib/posthog";
 
 const StyledSafeArea = styled(SafeAreaView);
 
@@ -73,6 +74,8 @@ export default function SignInScreen() {
           setApiError(mapAuthError(finErr));
           return;
         }
+        posthog.identify(email.trim());
+        posthog.capture("user_signed_in", { method: "email" });
         goHome();
         return;
       }
@@ -101,6 +104,7 @@ export default function SignInScreen() {
       }
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId });
+        posthog.capture("user_signed_in_with_google");
         goHome();
         return;
       }
@@ -154,7 +158,7 @@ export default function SignInScreen() {
                       setEmail(t);
                       setEmailError(undefined);
                     }}
-                    placeholder="you@email.com"
+                    placeholder="Enter your email"
                     keyboardType="email-address"
                     autoComplete="email"
                     textContentType="emailAddress"

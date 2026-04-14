@@ -7,6 +7,7 @@ import { icons } from "@/constants/icons";
 import images from "@/constants/images";
 import "@/global.css";
 import { formatCurrency } from "@/lib/utils";
+import { posthog } from "@/lib/posthog";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
 import { useState } from "react";
@@ -15,14 +16,14 @@ import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
-const HeaderLayout = ({ displayName, profileImageUrl }: { displayName: string; profileImageUrl: string | null }) => (
+const HeaderLayout = ({ displayName, profileImageUrl, onAddPress }: { displayName: string; profileImageUrl: string | null; onAddPress: () => void }) => (
   <>
     <View className="home-header">
       <View className="home-user">
         <Image source={profileImageUrl ? { uri: profileImageUrl } : images.avatar} className="home-avatar" />
         <Text className="home-user-name">{displayName}</Text>
       </View>
-      <Pressable className="home-add-icon-container" onPress={() => console.log("add button pressed")}>
+      <Pressable className="home-add-icon-container" onPress={onAddPress}>
         <Image source={icons.add} className="home-add-icon" />
       </Pressable>
     </View>
@@ -65,6 +66,11 @@ export default function App() {
 
   const profileImageUrl = user?.imageUrl;
 
+  const handleAddPress = () => {
+    posthog.capture("add_subscription_tapped");
+    console.log("add button pressed");
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       <FlatList
@@ -72,6 +78,7 @@ export default function App() {
           <HeaderLayout
             displayName={isLoaded ? displayName : "…"}
             profileImageUrl={isLoaded ? profileImageUrl : null}
+            onAddPress={handleAddPress}
           />
         }
         data={HOME_SUBSCRIPTIONS}
@@ -84,11 +91,15 @@ export default function App() {
           <SubscriptionCard
             {...item}
             expanded={expandedSubscriptionID === item.id}
-            onPress={() =>
+            onPress={() => {
+              const isExpanding = expandedSubscriptionID !== item.id;
+              if (isExpanding) {
+                posthog.capture("subscription_card_expanded", { subscription_id: item.id });
+              }
               setExpandedSubscriptionID((currentId) =>
                 currentId === item.id ? null : item.id,
-              )
-            }
+              );
+            }}
           />
         )}
       />

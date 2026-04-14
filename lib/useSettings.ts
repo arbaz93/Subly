@@ -12,6 +12,7 @@ import {
 } from "react-native-reanimated";
 
 import { mapAuthError } from "@/lib/auth-errors";
+import { posthog } from "@/lib/posthog";
 
 export const useSettings = () => {
   const { width: windowWidth } = useWindowDimensions();
@@ -43,6 +44,8 @@ export const useSettings = () => {
   const onSignOut = useCallback(async () => {
     setSigningOut(true);
     try {
+      posthog.capture("user_signed_out");
+      posthog.reset();
       await signOut();
       router.replace("/sign-in");
     } finally {
@@ -189,6 +192,7 @@ export const useSettings = () => {
       if (manipResult.base64) {
         const base64 = `data:image/jpeg;base64,${manipResult.base64}`;
         await user.setProfileImage({ file: base64 });
+        posthog.capture("profile_photo_updated");
         setPickedImage(null);
         setIsCropMode(false);
       }

@@ -23,7 +23,7 @@ export function AuthPasswordField({
   label,
   value,
   onChangeText,
-  placeholder = "••••••••",
+  placeholder = "Enter your password",
   error,
   autoComplete = "password",
   textContentType = "password",
